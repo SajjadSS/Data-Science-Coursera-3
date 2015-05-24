@@ -43,9 +43,11 @@ subject_all<-rbind(subject_train,subject_test)
 By the end of step 1 all test and train datasets have been  combind. We have three files as X\_all, y\_all and subject\_all.
 
 STEP 2  
-Extracts only the measurements on the mean and standard deviation for each measurement.   
+Extracts only the functions which contains mean and standard deviation.   
 
-First we should find the id for measurments containing mean() or std() terms.
+First we should find the id for measurments containing mean() or std() terms. "mean_columns_id" is a numeric vector containing the row number of all functoins in the "features.txt" which contain "mean()". Similar for "std()". 
+
+
 
 ```{r}
 mean_columns_id<-grep("mean()",features[,2],fixed=TRUE)
@@ -56,7 +58,7 @@ Next we choose the desired columns of the dataset X\_all and save in to X\_mean\
 X_mean_std<-X_all[,c(mean_columns_id,std_columns_id)]
 ```
 STEP 3   
-Activity name and subject is added to the dataset of X\_mean\_std as two columns to the right of X\_mean\_std.
+Activity name and subject number is added to the dataset of X\_mean\_std as two columns to the right of X\_mean\_std.
 ```{r}
 activity<-factor(as.numeric(y_all[,1]),labels=levels(activity_labels[,2])) 
 X_mean_std$activity<-activity
@@ -65,7 +67,7 @@ X_mean_std$subject<-subject_all
 
 STEP 4   
 Appropriately labels the data set with descriptive variable names.
-
+"mean_funcs" and "std_funcs" contains the names of functions extracted from "features.txt"
 ```{r}
 mean_funcs<-features[mean_columns_id,2]
 std_funcs<-features[std_columns_id,2]
